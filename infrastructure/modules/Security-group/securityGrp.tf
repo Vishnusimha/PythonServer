@@ -1,13 +1,3 @@
-variable "allowed_ingress_ports" {
-    type        = list(number)
-    description = "List all required ports" 
-}
-
-variable "security_group_name" {
-    type        = string
-    description = "Name of Security Group"
-}
-
 resource "aws_default_vpc" "default" {
 
 }
@@ -33,7 +23,4 @@ resource "aws_security_group" "custom_sg" {
     tags = {
       name = var.security_group_name
     }
-}
-output "security_group_id" {
-  value = aws_security_group.custom_sg.id
 }
