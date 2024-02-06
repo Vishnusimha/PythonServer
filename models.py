@@ -4,7 +4,6 @@ db = SQLAlchemy()
 
 class Quote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.String(100))
     title = db.Column(db.String(100))
     description = db.Column(db.Text)
 
