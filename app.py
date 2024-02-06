@@ -1,29 +1,19 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 
-app = Flask(__name__)
+from models import db
+from routes import quotes_bp
 
-# Endpoint returning a JSON response
-@app.route('/json', methods=['GET'])
-def get_json():
-    data = {'message': 'Hello, this is a JSON response!'}
-    return jsonify(data)
+def create_app():
+    app = Flask(__name__)
 
-# Endpoint with path parameter
-@app.route('/greet/<name>', methods=['GET'])
-def greet(name):
-    return f'Hello, {name}!'
+    # Configure SQLite database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///quotes.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    # Initialize database
+    db.init_app(app)
 
-# Endpoint handling POST request with JSON data
-@app.route('/post_data', methods=['POST'])
-def post_data():
-    req_data = request.get_json()
-    return jsonify({'received_data': req_data})
+    # Register blueprints
+    app.register_blueprint(quotes_bp)
 
-# Endpoint returning HTML response
-@app.route('/html', methods=['GET'])
-def get_html():
-    html_content = '<h1>Hello, this is an HTML response!</h1>'
-    return html_content, 200, {'Content-Type': 'text/html'}
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return app
