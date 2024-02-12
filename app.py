@@ -127,6 +127,20 @@ def get_all_posts_with_comments():
         
         return jsonify({'posts': formatted_posts})
 
+# Route for Deleting a Specific Comment
+@app.route('/post/<int:post_id>/comment/<int:comment_id>', methods=['DELETE'])
+def delete_comment(post_id, comment_id):
+    with app.app_context():
+        post = Post.query.get_or_404(post_id)
+        comment = Comment.query.filter_by(id=comment_id, post_id=post_id).first()
+
+        if comment:
+            db.session.delete(comment)
+            db.session.commit()
+            return jsonify({'message': f'Comment {comment_id} deleted successfully!'})
+        else:
+            return jsonify({'error': f'Comment {comment_id} not found for post {post_id}!'}), 404
+
 
 if __name__ == '__main__':
     with app.app_context():
