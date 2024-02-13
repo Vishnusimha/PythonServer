@@ -141,6 +141,16 @@ def delete_comment(post_id, comment_id):
         else:
             return jsonify({'error': f'Comment {comment_id} not found for post {post_id}!'}), 404
 
+# Route for Deleting All Posts and Associated Comments
+@app.route('/posts/all', methods=['DELETE'])
+def delete_all_posts_and_comments():
+    with app.app_context():
+        # Delete all comments
+        Comment.query.delete()
+        # Delete all posts
+        Post.query.delete()
+        db.session.commit()
+        return jsonify({'message': 'All posts and associated comments deleted successfully!'})
 
 if __name__ == '__main__':
     with app.app_context():
