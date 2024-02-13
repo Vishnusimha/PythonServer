@@ -1,30 +1,30 @@
 provider "aws" {
 
-  region     = "us-east-1"
+  region = "us-east-1"
 }
 
 //s3 bucket
 resource "aws_s3_bucket" "enterprice_backend_state" {
-    bucket = "flask-docker-ec2-backendbucket"
+  bucket = "flask-docker-ec2-backendbucket"
 
-    # lifecycle {
-    #     prevent_destroy = true
-    # }
+  # lifecycle {
+  #     prevent_destroy = true
+  # }
 }
 resource "aws_s3_bucket_versioning" "versioning_example" {
-    bucket = aws_s3_bucket.enterprice_backend_state.bucket
-    versioning_configuration {
-        status = "Enabled"
-    }
+  bucket = aws_s3_bucket.enterprice_backend_state.bucket
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
-    bucket = aws_s3_bucket.enterprice_backend_state.bucket
-    rule {
-        apply_server_side_encryption_by_default {
-            sse_algorithm = "AES256"
-        }
+  bucket = aws_s3_bucket.enterprice_backend_state.bucket
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
+  }
 }
 
 //locking for encryption using dynamoDB
